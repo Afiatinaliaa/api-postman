@@ -1,0 +1,2389 @@
+{
+  "info": {
+    "_postman_id": "a970ffe7-fd90-45e4-9117-d8d9f603afc5",
+    "name": "Dummy JSON",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "22941684"
+  },
+  "item": [
+    {
+      "name": "User",
+      "item": [
+        {
+          "name": "getUser",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Status code name has string\", function () {\r",
+                  "    pm.response.to.have.status(\"OK\");\r",
+                  "});\r",
+                  "\r",
+                  "const res = pm.response.json();\r",
+                  "pm.test(\"checking some property\", function (){\r",
+                  "    pm.expect(res.users[0]).to.be.an(\"object\");\r",
+                  "    pm.expect(res.users[0]).to.have.property(\"id\");\r",
+                  "    pm.expect(res.users[0].id).to.be.a(\"number\");\r",
+                  "    pm.expect(res.users[0]).to.have.property(\"bank\");\r",
+                  "    pm.expect(res.users[0].bank).to.be.a(\"object\");\r",
+                  "    pm.expect(res.users[0].company.address.coordinates).to.have.property(\"lat\");\r",
+                  "    pm.expect(res.users[0].company.address.coordinates.lat).to.be.a(\"number\");\r",
+                  "})\r",
+                  "\r",
+                  "pm.test(\"Body matches string\", function () {\r",
+                  "    pm.expect(pm.response.text()).to.include(\"Michael\");\r",
+                  "});\r",
+                  "\r",
+                  "// cari user dengan id 3\r",
+                  "const user = res.users.find(u => u.id === 3);\r",
+                  "\r",
+                  "pm.test(\"User with id 3 exists\", () => {\r",
+                  "  pm.expect(user).to.exist;\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Validate user with Id == 3\", () => {\r",
+                  "  pm.expect(user.firstName).to.equal(\"Sophia\");\r",
+                  "  pm.expect(user.company.department).to.equals(\"Research and Development\");\r",
+                  "  pm.expect(user.company.address.coordinates.lat).to.equals(20.086743);\r",
+                  "});",
+                  "",
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "})",
+                  "",
+                  "pm.test('Response time is less than 2000ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "})",
+                  "",
+                  "pm.test('Content-Type includes application/json', function () {",
+                  "    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');",
+                  "})",
+                  "",
+                  "pm.test('Response body has users array and pagination fields', function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json).to.have.property('users').that.is.an('array');",
+                  "    pm.expect(json).to.have.property('total').that.is.a('number');",
+                  "    pm.expect(json).to.have.property('skip').that.is.a('number');",
+                  "    pm.expect(json).to.have.property('limit').that.is.a('number');",
+                  "})",
+                  "",
+                  "pm.test('users array is not empty', function () {",
+                  "    pm.expect(pm.response.json().users).to.have.length.above(0);",
+                  "})",
+                  "",
+                  "pm.test('Each user has required fields with correct types', function () {",
+                  "    pm.response.json().users.forEach(function (u, i) {",
+                  "        pm.expect(u, '[' + i + '] id').to.have.property('id').that.is.a('number');",
+                  "        pm.expect(u, '[' + i + '] firstName').to.have.property('firstName').that.is.a('string');",
+                  "        pm.expect(u, '[' + i + '] lastName').to.have.property('lastName').that.is.a('string');",
+                  "        pm.expect(u, '[' + i + '] email').to.have.property('email').that.is.a('string');",
+                  "        pm.expect(u, '[' + i + '] username').to.have.property('username').that.is.a('string');",
+                  "        pm.expect(u, '[' + i + '] age').to.have.property('age').that.is.a('number');",
+                  "        pm.expect(u, '[' + i + '] gender').to.have.property('gender').that.is.a('string');",
+                  "    });",
+                  "})",
+                  "",
+                  "pm.test('Each user email has valid format', function () {",
+                  "    pm.response.json().users.forEach(function (u, i) {",
+                  "        pm.expect(u.email, '[' + i + '] email format').to.match(/.+@.+\\..+/);",
+                  "    });",
+                  "})"
+                ]
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "createUser",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 400\", function () {\r",
+                  "    pm.response.to.have.status(400);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"username\": \"amanda\",\r\n    \"password\": \"rigby\",\r\n    \"expiresInMins\": 30 // optional, defaults to 60\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/user/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getCurrentAuth",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "})\r",
+                  "\r",
+                  "pm.test(\"Status code name has string\", function () {\r",
+                  "    pm.response.to.have.status(\"OK\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/user/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user",
+                "me"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getSingleUser",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});",
+                  "",
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "})",
+                  "",
+                  "pm.test('Response time is less than 2000ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "})",
+                  "",
+                  "pm.test('Content-Type includes application/json', function () {",
+                  "    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');",
+                  "})",
+                  "",
+                  "pm.test('Response body has required fields with correct types', function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json).to.have.property('id').that.is.a('number');",
+                  "    pm.expect(json).to.have.property('firstName').that.is.a('string');",
+                  "    pm.expect(json).to.have.property('lastName').that.is.a('string');",
+                  "    pm.expect(json).to.have.property('email').that.is.a('string');",
+                  "    pm.expect(json).to.have.property('username').that.is.a('string');",
+                  "    pm.expect(json).to.have.property('age').that.is.a('number');",
+                  "    pm.expect(json).to.have.property('gender').that.is.a('string');",
+                  "    pm.expect(json).to.have.property('phone').that.is.a('string');",
+                  "})",
+                  "",
+                  "pm.test('id equals 2 (fixed resource)', function () {",
+                  "    pm.expect(pm.response.json().id).to.equal(2);",
+                  "})",
+                  "",
+                  "pm.test('email has valid format', function () {",
+                  "    pm.expect(pm.response.json().email).to.match(/.+@.+\\..+/);",
+                  "})"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/2",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "2"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "updateUser",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const data = pm.response.json();\r",
+                  "\r",
+                  "const oldLastName = pm.environment.get(\"lastName\");\r",
+                  "\r",
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Last name is different from previous\", () => {\r",
+                  "  pm.expect(data.lastName).to.not.equal(oldLastName);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Successful PUT request\", function () {\r",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200]);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Status code name has string\", function () {\r",
+                  "    pm.response.to.have.status(\"OK\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Success Update Last Name\", function() {\r",
+                  "    pm.expect(data.lastName).to.equals(\"Shanon\")\r",
+                  "})\r",
+                  "\r",
+                  "pm.test(\"Response behavior based on status code\", function () {\r",
+                  "    const code = pm.response.code;\r",
+                  "    const data = pm.response.json();\r",
+                  "\r",
+                  "    if (code === 200) {\r",
+                  "        pm.expect(data).to.have.property(\"lastName\");\r",
+                  "\r",
+                  "    } else if (code === 401) {\r",
+                  "        pm.expect(data).to.have.property(\"message\");\r",
+                  "\r",
+                  "    } else {\r",
+                  "        pm.expect.fail(`Unexpected status code: ${code}`);\r",
+                  "    }\r",
+                  "});",
+                  "",
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "})",
+                  "",
+                  "pm.test('Response time is less than 2000ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "})",
+                  "",
+                  "pm.test('Content-Type includes application/json', function () {",
+                  "    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');",
+                  "})",
+                  "",
+                  "pm.test('Response body has required fields with correct types', function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json).to.have.property('id').that.is.a('number');",
+                  "    pm.expect(json).to.have.property('firstName').that.is.a('string');",
+                  "    pm.expect(json).to.have.property('lastName').that.is.a('string');",
+                  "    pm.expect(json).to.have.property('email').that.is.a('string');",
+                  "    pm.expect(json).to.have.property('username').that.is.a('string');",
+                  "})",
+                  "",
+                  "pm.test('id equals 2 (fixed resource)', function () {",
+                  "    pm.expect(pm.response.json().id).to.equal(2);",
+                  "})"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"lastName\":\"Shanon\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/2",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "2"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "deleteUser",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Content-Type is present\", function () {\r",
+                  "    pm.response.to.have.header(\"Content-Type\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Status code name has string\", function () {\r",
+                  "    pm.response.to.have.status(\"OK\");\r",
+                  "});",
+                  "",
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "})",
+                  "",
+                  "pm.test('Response time is less than 2000ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "})",
+                  "",
+                  "pm.test('Content-Type includes application/json', function () {",
+                  "    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');",
+                  "})",
+                  "",
+                  "pm.test('Response body has id and isDeleted flag', function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json).to.have.property('id').that.is.a('number');",
+                  "    pm.expect(json).to.have.property('isDeleted').that.is.a('boolean');",
+                  "    pm.expect(json).to.have.property('deletedOn').that.is.a('string');",
+                  "})",
+                  "",
+                  "pm.test('isDeleted is true', function () {",
+                  "    pm.expect(pm.response.json().isDeleted).to.be.true;",
+                  "})",
+                  "",
+                  "pm.test('id equals 3 (fixed resource)', function () {",
+                  "    pm.expect(pm.response.json().id).to.equal(3);",
+                  "})"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/3",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "3"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Product",
+      "item": [
+        {
+          "name": "getAllProduct",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "const data = pm.response.json();\r",
+                  "pm.test(\"Validate product id = 1\", function(){\r",
+                  "    pm.expect(data.products[0]).to.have.property(\"title\");\r",
+                  "    pm.expect(data.products[0].title).to.equals(\"Essence Mascara Lash Princess\");\r",
+                  "    pm.expect(data.products[0].price).to.be.a(\"number\");\r",
+                  "    pm.expect(data.products[0].tags).to.be.an(\"array\");\r",
+                  "    pm.expect(data.products[0].dimensions).to.be.a(\"object\")\r",
+                  "    pm.expect(data.products[0].reviews[0].comment).to.be.a(\"string\")\r",
+                  "})\r",
+                  "\r",
+                  "pm.test(\"Response time is less than 200ms\", function () {\r",
+                  "    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+                  "});\r",
+                  "",
+                  "",
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "})",
+                  "",
+                  "pm.test('Response time is less than 2000ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "})",
+                  "",
+                  "pm.test('Content-Type includes application/json', function () {",
+                  "    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');",
+                  "})",
+                  "",
+                  "pm.test('Response body has products array and pagination fields', function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json).to.have.property('products').that.is.an('array');",
+                  "    pm.expect(json).to.have.property('total').that.is.a('number');",
+                  "    pm.expect(json).to.have.property('skip').that.is.a('number');",
+                  "    pm.expect(json).to.have.property('limit').that.is.a('number');",
+                  "})",
+                  "",
+                  "pm.test('products array is not empty', function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.products).to.have.length.above(0);",
+                  "})",
+                  "",
+                  "pm.test('Each product has required fields with correct types', function () {",
+                  "    var json = pm.response.json();",
+                  "    json.products.forEach(function (p, i) {",
+                  "        pm.expect(p, '[' + i + '] id').to.have.property('id').that.is.a('number');",
+                  "        pm.expect(p, '[' + i + '] title').to.have.property('title').that.is.a('string');",
+                  "        pm.expect(p, '[' + i + '] price').to.have.property('price').that.is.a('number');",
+                  "        pm.expect(p, '[' + i + '] stock').to.have.property('stock').that.is.a('number');",
+                  "        pm.expect(p, '[' + i + '] rating').to.have.property('rating').that.is.a('number');",
+                  "        pm.expect(p, '[' + i + '] category').to.have.property('category').that.is.a('string');",
+                  "        pm.expect(p, '[' + i + '] thumbnail').to.have.property('thumbnail').that.is.a('string');",
+                  "    });",
+                  "})",
+                  "",
+                  "pm.test('price and stock are non-negative for all products', function () {",
+                  "    var json = pm.response.json();",
+                  "    json.products.forEach(function (p, i) {",
+                  "        pm.expect(p.price, '[' + i + '] price').to.be.at.least(0);",
+                  "        pm.expect(p.stock, '[' + i + '] stock').to.be.at.least(0);",
+                  "    });",
+                  "})"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/products",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "products"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getSingleProduct",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "const data = pm.response.json();\r",
+                  "pm.test(\"Validate product id = 1\", function(){\r",
+                  "    pm.expect(data).to.have.property(\"title\");\r",
+                  "    pm.expect(data.title).to.equals(\"Essence Mascara Lash Princess\");\r",
+                  "    pm.expect(data.price).to.be.a(\"number\");\r",
+                  "    pm.expect(data.tags).to.be.an(\"array\");\r",
+                  "    pm.expect(data.dimensions).to.be.a(\"object\");\r",
+                  "    pm.expect(data.reviews[0].comment).to.be.a(\"string\");\r",
+                  "    pm.expect(data.reviews[2].reviewerName).to.equals(\"Eleanor Collins\")\r",
+                  "})\r",
+                  "\r",
+                  "pm.test(\"Response time is less than 200ms\", function () {\r",
+                  "    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+                  "});",
+                  "",
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "})",
+                  "",
+                  "pm.test('Response time is less than 2000ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "})",
+                  "",
+                  "pm.test('Content-Type includes application/json', function () {",
+                  "    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');",
+                  "})",
+                  "",
+                  "pm.test('Response body has correct structure and types', function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json).to.have.property('id').that.is.a('number');",
+                  "    pm.expect(json).to.have.property('title').that.is.a('string');",
+                  "    pm.expect(json).to.have.property('price').that.is.a('number');",
+                  "    pm.expect(json).to.have.property('stock').that.is.a('number');",
+                  "    pm.expect(json).to.have.property('rating').that.is.a('number');",
+                  "    pm.expect(json).to.have.property('category').that.is.a('string');",
+                  "    pm.expect(json).to.have.property('description').that.is.a('string');",
+                  "    pm.expect(json).to.have.property('images').that.is.an('array');",
+                  "    pm.expect(json).to.have.property('thumbnail').that.is.a('string');",
+                  "})",
+                  "",
+                  "pm.test('id equals 1 (fixed resource)', function () {",
+                  "    pm.expect(pm.response.json().id).to.equal(1);",
+                  "})",
+                  "",
+                  "pm.test('reviews is an array and each review has required fields', function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json).to.have.property('reviews').that.is.an('array');",
+                  "    json.reviews.forEach(function (r, i) {",
+                  "        pm.expect(r, 'review[' + i + '] rating').to.have.property('rating').that.is.a('number');",
+                  "        pm.expect(r, 'review[' + i + '] comment').to.have.property('comment').that.is.a('string');",
+                  "        pm.expect(r, 'review[' + i + '] reviewerName').to.have.property('reviewerName').that.is.a('string');",
+                  "    });",
+                  "})",
+                  "",
+                  "pm.test('price and stock are non-negative', function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.price).to.be.at.least(0);",
+                  "    pm.expect(json.stock).to.be.at.least(0);",
+                  "})"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "products",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "searchProduct",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Body matches product name\", function () {\r",
+                  "    pm.expect(pm.response.text()).to.include(\"Apple MagSafe Battery Pack\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Search product API works correctly\", () => {\r",
+                  "    const res = pm.response.json();\r",
+                  "    pm.expect(res.products).to.be.an(\"array\");\r",
+                  "\r",
+                  "    const keyword = pm.variables.get(\"Apple MagSafe\")?.toLowerCase();\r",
+                  "    if (keyword) {\r",
+                  "        res.products.forEach(p => {\r",
+                  "            pm.expect(\r",
+                  "                p.title.toLowerCase().includes(keyword) ||\r",
+                  "                p.description.toLowerCase().includes(keyword)\r",
+                  "            ).to.be.true;\r",
+                  "        });\r",
+                  "    }\r",
+                  "});",
+                  "",
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "})",
+                  "",
+                  "pm.test('Response time is less than 2000ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "})",
+                  "",
+                  "pm.test('Content-Type includes application/json', function () {",
+                  "    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');",
+                  "})",
+                  "",
+                  "pm.test('Response body has products array and pagination fields', function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json).to.have.property('products').that.is.an('array');",
+                  "    pm.expect(json).to.have.property('total').that.is.a('number');",
+                  "    pm.expect(json).to.have.property('skip').that.is.a('number');",
+                  "    pm.expect(json).to.have.property('limit').that.is.a('number');",
+                  "})",
+                  "",
+                  "pm.test('Each product in search results has required fields', function () {",
+                  "    var json = pm.response.json();",
+                  "    json.products.forEach(function (p, i) {",
+                  "        pm.expect(p, '[' + i + '] id').to.have.property('id').that.is.a('number');",
+                  "        pm.expect(p, '[' + i + '] title').to.have.property('title').that.is.a('string');",
+                  "        pm.expect(p, '[' + i + '] price').to.have.property('price').that.is.a('number');",
+                  "        pm.expect(p, '[' + i + '] category').to.have.property('category').that.is.a('string');",
+                  "    });",
+                  "})"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://dummyjson.com/products/search?q=Apple MagSafe Battery Pack",
+              "protocol": "https",
+              "host": [
+                "dummyjson",
+                "com"
+              ],
+              "path": [
+                "products",
+                "search"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "Apple MagSafe Battery Pack"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "createProduct",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Successful POST request\", function () {\r",
+                  "    pm.expect(pm.response.code).to.be.oneOf([201, 202]);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Status code name has string\", function () {\r",
+                  "    pm.response.to.have.status(\"Created\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Body matches string\", function () {\r",
+                  "    pm.expect(pm.response.text()).to.include(\"Iphone 17 Pro Max\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Checking property on Body\", function(){\r",
+                  "    const data = pm.response.json();\r",
+                  "    pm.expect(data).to.have.property(\"title\");\r",
+                  "    pm.expect(data).to.have.property(\"id\");\r",
+                  "    pm.expect(data.title).to.be.a(\"string\");\r",
+                  "    pm.expect(data.id).to.be.a(\"number\");\r",
+                  "})",
+                  "",
+                  "pm.test('Status code is 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "})",
+                  "",
+                  "pm.test('Response time is less than 2000ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "})",
+                  "",
+                  "pm.test('Content-Type includes application/json', function () {",
+                  "    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');",
+                  "})",
+                  "",
+                  "pm.test('Response body has required fields with correct types', function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json).to.have.property('id').that.is.a('number');",
+                  "    pm.expect(json).to.have.property('title').that.is.a('string');",
+                  "    pm.expect(json).to.have.property('price').that.is.a('number');",
+                  "    pm.expect(json).to.have.property('stock').that.is.a('number');",
+                  "    pm.expect(json).to.have.property('category').that.is.a('string');",
+                  "})"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"title\":\"Iphone 17 Pro Max\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/products/Add",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "products",
+                "Add"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "sortProduct",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "})",
+                  "",
+                  "pm.test('Response time is less than 2000ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "})",
+                  "",
+                  "pm.test('Content-Type includes application/json', function () {",
+                  "    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');",
+                  "})",
+                  "",
+                  "pm.test('Response body has products array and pagination fields', function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json).to.have.property('products').that.is.an('array');",
+                  "    pm.expect(json).to.have.property('total').that.is.a('number');",
+                  "    pm.expect(json).to.have.property('skip').that.is.a('number');",
+                  "    pm.expect(json).to.have.property('limit').that.is.a('number');",
+                  "})",
+                  "",
+                  "pm.test('Each product has required fields with correct types', function () {",
+                  "    var json = pm.response.json();",
+                  "    json.products.forEach(function (p, i) {",
+                  "        pm.expect(p, '[' + i + '] id').to.have.property('id').that.is.a('number');",
+                  "        pm.expect(p, '[' + i + '] title').to.have.property('title').that.is.a('string');",
+                  "        pm.expect(p, '[' + i + '] price').to.have.property('price').that.is.a('number');",
+                  "        pm.expect(p, '[' + i + '] stock').to.have.property('stock').that.is.a('number');",
+                  "        pm.expect(p, '[' + i + '] rating').to.have.property('rating').that.is.a('number');",
+                  "        pm.expect(p, '[' + i + '] category').to.have.property('category').that.is.a('string');",
+                  "    });",
+                  "})",
+                  "",
+                  "pm.test('Products are sorted alphabetically by title (ascending)', function () {",
+                  "    var json = pm.response.json();",
+                  "    var titles = json.products.map(function (p) {",
+                  "        return p.title;",
+                  "    });",
+                  "    var sorted = titles.slice().sort(function (a, b) {",
+                  "        return a.toLowerCase().localeCompare(b.toLowerCase());",
+                  "    });",
+                  "    pm.expect(titles).to.deep.equal(sorted);",
+                  "})"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products?sortBy=title&order=asc",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "products"
+              ],
+              "query": [
+                {
+                  "key": "sortBy",
+                  "value": "title"
+                },
+                {
+                  "key": "order",
+                  "value": "asc"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "updateProduct",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "})",
+                  "",
+                  "pm.test('Response time is less than 2000ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "})",
+                  "",
+                  "pm.test('Content-Type includes application/json', function () {",
+                  "    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');",
+                  "})",
+                  "",
+                  "pm.test('Response body has required fields with correct data types', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('id').that.is.a('number');",
+                  "    pm.expect(jsonData).to.have.property('title').that.is.a('string');",
+                  "    pm.expect(jsonData).to.have.property('price').that.is.a('number');",
+                  "    pm.expect(jsonData).to.have.property('rating').that.is.a('number');",
+                  "    pm.expect(jsonData).to.have.property('stock').that.is.a('number');",
+                  "})",
+                  "",
+                  "pm.test('id equals 1', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.id).to.equal(1);",
+                  "})",
+                  "",
+                  "pm.test('title equals \\'Samsung S23 Ultra\\'', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.title).to.equal('Samsung S23 Ultra');",
+                  "})",
+                  "",
+                  "pm.test('rating equals 4.78', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.rating).to.equal(4.78);",
+                  "})",
+                  "",
+                  "pm.test('stock equals 200', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.stock).to.equal(200);",
+                  "})",
+                  "",
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "})",
+                  "",
+                  "pm.test('Response time is less than 2000ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "})",
+                  "",
+                  "pm.test('Content-Type includes application/json', function () {",
+                  "    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');",
+                  "})",
+                  "",
+                  "pm.test('Response body has required fields with correct types', function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json).to.have.property('id').that.is.a('number');",
+                  "    pm.expect(json).to.have.property('title').that.is.a('string');",
+                  "    pm.expect(json).to.have.property('price').that.is.a('number');",
+                  "    pm.expect(json).to.have.property('rating').that.is.a('number');",
+                  "    pm.expect(json).to.have.property('stock').that.is.a('number');",
+                  "})",
+                  "",
+                  "pm.test('id equals 1 (fixed resource)', function () {",
+                  "    pm.expect(pm.response.json().id).to.equal(1);",
+                  "})",
+                  "",
+                  "pm.test('title equals \\'Samsung S23 Ultra\\'', function () {",
+                  "    pm.expect(pm.response.json().title).to.equal('Samsung S23 Ultra');",
+                  "})",
+                  "",
+                  "pm.test('rating equals 4.78', function () {",
+                  "    pm.expect(pm.response.json().rating).to.equal(4.78);",
+                  "})",
+                  "",
+                  "pm.test('stock equals 200', function () {",
+                  "    pm.expect(pm.response.json().stock).to.equal(200);",
+                  "})"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"title\":\"Samsung S23 Ultra\",\r\n\t\t\"rating\":4.78,\r\n\t\t\"stock\":200\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/products/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "products",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "deleteProduct",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Test for status code\r",
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.expect(pm.response.code).to.equal(200);\r",
+                  "});\r",
+                  "\r",
+                  "// Test for response headers\r",
+                  "pm.test(\"Response has correct headers\", function () {\r",
+                  "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.equal(\"application/json\");\r",
+                  "});\r",
+                  "\r",
+                  "// Parse response body\r",
+                  "const response = pm.response.json();\r",
+                  "\r",
+                  "// Test for response body structure and properties\r",
+                  "pm.test(\"Response body has expected properties\", function () {\r",
+                  "    pm.expect(response).to.have.all.keys(\r",
+                  "        \"id\", \"title\", \"description\", \"category\", \"price\", \r",
+                  "        \"discountPercentage\", \"rating\", \"stock\", \"tags\", \r",
+                  "        \"brand\", \"sku\", \"weight\", \"dimensions\", \r",
+                  "        \"warrantyInformation\", \"shippingInformation\", \r",
+                  "        \"availabilityStatus\", \"reviews\", \"returnPolicy\", \r",
+                  "        \"minimumOrderQuantity\", \"meta\", \"images\", \r",
+                  "        \"thumbnail\", \"isDeleted\", \"deletedOn\"\r",
+                  "    );\r",
+                  "});\r",
+                  "\r",
+                  "// Test for dimensions object structure\r",
+                  "pm.test(\"Dimensions object has expected properties\", function () {\r",
+                  "    pm.expect(response.dimensions).to.have.all.keys(\"width\", \"height\", \"depth\");\r",
+                  "});\r",
+                  "\r",
+                  "// Test for reviews array structure and properties\r",
+                  "pm.test(\"Reviews array has expected structure\", function () {\r",
+                  "    pm.expect(response.reviews).to.be.an(\"array\");\r",
+                  "    response.reviews.forEach(review => {\r",
+                  "        pm.expect(review).to.have.all.keys(\"rating\", \"comment\", \"date\", \"reviewerName\", \"reviewerEmail\");\r",
+                  "        pm.expect(review.rating).to.be.a(\"number\");\r",
+                  "        pm.expect(review.comment).to.be.a(\"string\");\r",
+                  "        pm.expect(review.reviewerName).to.be.a(\"string\");\r",
+                  "        pm.expect(review.reviewerEmail).to.be.a(\"string\");\r",
+                  "    });\r",
+                  "});\r",
+                  "\r",
+                  "// Test for tags array presence and type\r",
+                  "pm.test(\"Tags array exists and is of type array\", function () {\r",
+                  "    pm.expect(response.tags).to.exist;\r",
+                  "    pm.expect(response.tags).to.be.an(\"array\");\r",
+                  "    response.tags.forEach(tag => {\r",
+                  "        pm.expect(tag).to.be.a(\"string\");\r",
+                  "    });\r",
+                  "});\r",
+                  "\r",
+                  "// Test for images array presence and type\r",
+                  "pm.test(\"Images array exists and is of type array\", function () {\r",
+                  "    pm.expect(response.images).to.exist;\r",
+                  "    pm.expect(response.images).to.be.an(\"array\");\r",
+                  "    response.images.forEach(image => {\r",
+                  "        pm.expect(image).to.be.a(\"string\");\r",
+                  "    });\r",
+                  "});\r",
+                  "\r",
+                  "// Test for isDeleted property\r",
+                  "pm.test(\"isDeleted property is a boolean\", function () {\r",
+                  "    pm.expect(response.isDeleted).to.be.a(\"boolean\");\r",
+                  "});\r",
+                  "\r",
+                  "// Test for deletedOn date format\r",
+                  "pm.test(\"deletedOn is a valid date string\", function () {\r",
+                  "    const deletedOnDate = new Date(response.deletedOn);\r",
+                  "    pm.expect(deletedOnDate.toString()).to.not.equal(\"Invalid Date\");\r",
+                  "});\r",
+                  "",
+                  "",
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "})",
+                  "",
+                  "pm.test('Response time is less than 2000ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "})",
+                  "",
+                  "pm.test('Content-Type includes application/json', function () {",
+                  "    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');",
+                  "})",
+                  "",
+                  "pm.test('Response body has id and isDeleted flag', function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json).to.have.property('id').that.is.a('number');",
+                  "    pm.expect(json).to.have.property('isDeleted').that.is.a('boolean');",
+                  "    pm.expect(json).to.have.property('deletedOn').that.is.a('string');",
+                  "})",
+                  "",
+                  "pm.test('isDeleted is true', function () {",
+                  "    pm.expect(pm.response.json().isDeleted).to.be.true;",
+                  "})",
+                  "",
+                  "pm.test('id equals 5 (fixed resource)', function () {",
+                  "    pm.expect(pm.response.json().id).to.equal(5);",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/",
+                "type": "text"
+              },
+              {
+                "key": "Accept-Charset",
+                "value": "charset=utf-8",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/products/5",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "products",
+                "5"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getListProductCategory",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "})",
+                  "",
+                  "pm.test('Response time is less than 2000ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "})",
+                  "",
+                  "pm.test('Content-Type includes application/json', function () {",
+                  "    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');",
+                  "})",
+                  "",
+                  "pm.test('Response is a non-empty array', function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json).to.be.an('array').with.length.above(0);",
+                  "})",
+                  "",
+                  "pm.test('Each category item is a non-empty string', function () {",
+                  "    pm.response.json().forEach(function (item, i) {",
+                  "        pm.expect(item, 'item[' + i + ']').to.be.a('string').and.not.empty;",
+                  "    });",
+                  "})"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products/category-list",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "products",
+                "category-list"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Carts",
+      "item": [
+        {
+          "name": "getAllCarts",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "})",
+                  "",
+                  "pm.test('Response time is less than 2000ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "})",
+                  "",
+                  "pm.test('Content-Type includes application/json', function () {",
+                  "    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');",
+                  "})",
+                  "",
+                  "pm.test('Response body has carts array and pagination fields', function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json).to.have.property('carts').that.is.an('array');",
+                  "    pm.expect(json).to.have.property('total').that.is.a('number');",
+                  "    pm.expect(json).to.have.property('skip').that.is.a('number');",
+                  "    pm.expect(json).to.have.property('limit').that.is.a('number');",
+                  "})",
+                  "",
+                  "pm.test('carts array is not empty', function () {",
+                  "    pm.expect(pm.response.json().carts).to.have.length.above(0);",
+                  "})",
+                  "",
+                  "pm.test('Each cart has required fields with correct types', function () {",
+                  "    pm.response.json().carts.forEach(function (c, i) {",
+                  "        pm.expect(c, '[' + i + '] id').to.have.property('id').that.is.a('number');",
+                  "        pm.expect(c, '[' + i + '] userId').to.have.property('userId').that.is.a('number');",
+                  "        pm.expect(c, '[' + i + '] products').to.have.property('products').that.is.an('array');",
+                  "        pm.expect(c, '[' + i + '] total').to.have.property('total').that.is.a('number');",
+                  "        pm.expect(c, '[' + i + '] totalProducts').to.have.property('totalProducts').that.is.a('number');",
+                  "        pm.expect(c, '[' + i + '] totalQuantity').to.have.property('totalQuantity').that.is.a('number');",
+                  "    });",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/carts",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "carts"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getSingleCarts",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "})",
+                  "",
+                  "pm.test('Response time is less than 2000ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "})",
+                  "",
+                  "pm.test('Content-Type includes application/json', function () {",
+                  "    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');",
+                  "})",
+                  "",
+                  "pm.test('Response body has required cart fields with correct types', function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json).to.have.property('id').that.is.a('number');",
+                  "    pm.expect(json).to.have.property('userId').that.is.a('number');",
+                  "    pm.expect(json).to.have.property('products').that.is.an('array');",
+                  "    pm.expect(json).to.have.property('total').that.is.a('number');",
+                  "    pm.expect(json).to.have.property('totalProducts').that.is.a('number');",
+                  "    pm.expect(json).to.have.property('totalQuantity').that.is.a('number');",
+                  "})",
+                  "",
+                  "pm.test('Each product in cart has required fields', function () {",
+                  "    pm.response.json().products.forEach(function (p, i) {",
+                  "        pm.expect(p, '[' + i + '] id').to.have.property('id').that.is.a('number');",
+                  "        pm.expect(p, '[' + i + '] title').to.have.property('title').that.is.a('string');",
+                  "        pm.expect(p, '[' + i + '] price').to.have.property('price').that.is.a('number');",
+                  "        pm.expect(p, '[' + i + '] quantity').to.have.property('quantity').that.is.a('number');",
+                  "        pm.expect(p, '[' + i + '] total').to.have.property('total').that.is.a('number');",
+                  "    });",
+                  "})",
+                  "",
+                  "pm.test('total is non-negative', function () {",
+                  "    pm.expect(pm.response.json().total).to.be.at.least(0);",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/carts/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "carts",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "addCart",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "})",
+                  "",
+                  "pm.test('Response time is less than 2000ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "})",
+                  "",
+                  "pm.test('Content-Type includes application/json', function () {",
+                  "    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');",
+                  "})",
+                  "",
+                  "pm.test('Response body has required cart fields with correct types', function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json).to.have.property('id').that.is.a('number');",
+                  "    pm.expect(json).to.have.property('userId').that.is.a('number');",
+                  "    pm.expect(json).to.have.property('products').that.is.an('array');",
+                  "    pm.expect(json).to.have.property('total').that.is.a('number');",
+                  "    pm.expect(json).to.have.property('totalProducts').that.is.a('number');",
+                  "    pm.expect(json).to.have.property('totalQuantity').that.is.a('number');",
+                  "})",
+                  "",
+                  "pm.test('products array is not empty', function () {",
+                  "    pm.expect(pm.response.json().products).to.have.length.above(0);",
+                  "})"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"userId\": 1,\r\n    \"products\": [\r\n      {\r\n        \"id\": 144,\r\n        \"quantity\": 4\r\n      },\r\n      {\r\n        \"id\": 98,\r\n        \"quantity\": 1\r\n      }\r\n    ]\r\n  }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/carts/add",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "carts",
+                "add"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "updateCart",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "})",
+                  "",
+                  "pm.test('Response time is less than 2000ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "})",
+                  "",
+                  "pm.test('Content-Type includes application/json', function () {",
+                  "    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');",
+                  "})",
+                  "",
+                  "pm.test('Response body has required cart fields with correct types', function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json).to.have.property('id').that.is.a('number');",
+                  "    pm.expect(json).to.have.property('userId').that.is.a('number');",
+                  "    pm.expect(json).to.have.property('products').that.is.an('array');",
+                  "    pm.expect(json).to.have.property('total').that.is.a('number');",
+                  "})",
+                  "",
+                  "pm.test('id equals 1 (fixed resource)', function () {",
+                  "    pm.expect(pm.response.json().id).to.equal(1);",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"merge\": true, // this will include existing products in the cart\r\n    \"products\": [\r\n      {\r\n        \"id\": 1,\r\n        \"quantity\": 1\r\n      }\r\n    ]\r\n  }\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/carts/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "carts",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "deleteCart",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "})",
+                  "",
+                  "pm.test('Response time is less than 2000ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "})",
+                  "",
+                  "pm.test('Content-Type includes application/json', function () {",
+                  "    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');",
+                  "})",
+                  "",
+                  "pm.test('Response body has id and isDeleted flag', function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json).to.have.property('id').that.is.a('number');",
+                  "    pm.expect(json).to.have.property('isDeleted').that.is.a('boolean');",
+                  "    pm.expect(json).to.have.property('deletedOn').that.is.a('string');",
+                  "})",
+                  "",
+                  "pm.test('isDeleted is true', function () {",
+                  "    pm.expect(pm.response.json().isDeleted).to.be.true;",
+                  "})",
+                  "",
+                  "pm.test('id equals 1 (fixed resource)', function () {",
+                  "    pm.expect(pm.response.json().id).to.equal(1);",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/carts/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "carts",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Recipe",
+      "item": [
+        {
+          "name": "getRecipe",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "})",
+                  "",
+                  "pm.test('Response time is less than 2000ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "})",
+                  "",
+                  "pm.test('Content-Type includes application/json', function () {",
+                  "    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');",
+                  "})",
+                  "",
+                  "pm.test('Response body has recipes array and pagination fields', function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json).to.have.property('recipes').that.is.an('array');",
+                  "    pm.expect(json).to.have.property('total').that.is.a('number');",
+                  "    pm.expect(json).to.have.property('skip').that.is.a('number');",
+                  "    pm.expect(json).to.have.property('limit').that.is.a('number');",
+                  "})",
+                  "",
+                  "pm.test('recipes array is not empty', function () {",
+                  "    pm.expect(pm.response.json().recipes).to.have.length.above(0);",
+                  "})",
+                  "",
+                  "pm.test('Each recipe has required fields with correct types', function () {",
+                  "    pm.response.json().recipes.forEach(function (r, i) {",
+                  "        pm.expect(r, '[' + i + '] id').to.have.property('id').that.is.a('number');",
+                  "        pm.expect(r, '[' + i + '] name').to.have.property('name').that.is.a('string');",
+                  "        pm.expect(r, '[' + i + '] cuisine').to.have.property('cuisine').that.is.a('string');",
+                  "        pm.expect(r, '[' + i + '] difficulty').to.have.property('difficulty').that.is.a('string');",
+                  "        pm.expect(r, '[' + i + '] caloriesPerServing').to.have.property('caloriesPerServing').that.is.a('number');",
+                  "        pm.expect(r, '[' + i + '] ingredients').to.have.property('ingredients').that.is.an('array');",
+                  "        pm.expect(r, '[' + i + '] instructions').to.have.property('instructions').that.is.an('array');",
+                  "    });",
+                  "})"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/recipes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "recipes"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "searchRecipe",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "})",
+                  "",
+                  "pm.test('Response time is less than 2000ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "})",
+                  "",
+                  "pm.test('Content-Type includes application/json', function () {",
+                  "    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');",
+                  "})",
+                  "",
+                  "pm.test('Response body has recipes array and pagination fields', function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json).to.have.property('recipes').that.is.an('array');",
+                  "    pm.expect(json).to.have.property('total').that.is.a('number');",
+                  "    pm.expect(json).to.have.property('skip').that.is.a('number');",
+                  "    pm.expect(json).to.have.property('limit').that.is.a('number');",
+                  "})",
+                  "",
+                  "pm.test('Each recipe in search results has required fields', function () {",
+                  "    pm.response.json().recipes.forEach(function (r, i) {",
+                  "        pm.expect(r, '[' + i + '] id').to.have.property('id').that.is.a('number');",
+                  "        pm.expect(r, '[' + i + '] name').to.have.property('name').that.is.a('string');",
+                  "    });",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/recipes/search?q=Margherita",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "recipes",
+                "search"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "Margherita"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "createRecipe",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "})",
+                  "",
+                  "pm.test('Response time is less than 2000ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "})",
+                  "",
+                  "pm.test('Content-Type includes application/json', function () {",
+                  "    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');",
+                  "})",
+                  "",
+                  "pm.test('Response body has required recipe fields', function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json).to.have.property('id').that.is.a('number');",
+                  "    pm.expect(json).to.have.property('name').that.is.a('string');",
+                  "    pm.expect(json).to.have.property('cuisine').that.is.a('string');",
+                  "    pm.expect(json).to.have.property('difficulty').that.is.a('string');",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Tasty Pizza\"\r\n    /* other recipe data */\r\n}\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/recipes/add",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "recipes",
+                "add"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "updateRecipe",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "})",
+                  "",
+                  "pm.test('Response time is less than 2000ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "})",
+                  "",
+                  "pm.test('Content-Type includes application/json', function () {",
+                  "    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');",
+                  "})",
+                  "",
+                  "pm.test('Response body has required recipe fields with correct types', function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json).to.have.property('id').that.is.a('number');",
+                  "    pm.expect(json).to.have.property('name').that.is.a('string');",
+                  "    pm.expect(json).to.have.property('cuisine').that.is.a('string');",
+                  "    pm.expect(json).to.have.property('difficulty').that.is.a('string');",
+                  "    pm.expect(json).to.have.property('caloriesPerServing').that.is.a('number');",
+                  "})",
+                  "",
+                  "pm.test('id equals 1 (fixed resource)', function () {",
+                  "    pm.expect(pm.response.json().id).to.equal(1);",
+                  "})"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Pepperoni Pizza\"\r\n    /* other recipe data */\r\n}\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/recipes/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "recipes",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "deleteRecipe",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "})",
+                  "",
+                  "pm.test('Response time is less than 2000ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "})",
+                  "",
+                  "pm.test('Content-Type includes application/json', function () {",
+                  "    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');",
+                  "})",
+                  "",
+                  "pm.test('Response body has id and isDeleted flag', function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json).to.have.property('id').that.is.a('number');",
+                  "    pm.expect(json).to.have.property('isDeleted').that.is.a('boolean');",
+                  "    pm.expect(json).to.have.property('deletedOn').that.is.a('string');",
+                  "})",
+                  "",
+                  "pm.test('isDeleted is true', function () {",
+                  "    pm.expect(pm.response.json().isDeleted).to.be.true;",
+                  "})",
+                  "",
+                  "pm.test('id equals 1 (fixed resource)', function () {",
+                  "    pm.expect(pm.response.json().id).to.equal(1);",
+                  "})"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/recipes/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "recipes",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Comment",
+      "item": [
+        {
+          "name": "getAllComment",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "})",
+                  "",
+                  "pm.test('Response time is less than 2000ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "})",
+                  "",
+                  "pm.test('Content-Type includes application/json', function () {",
+                  "    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');",
+                  "})",
+                  "",
+                  "pm.test('Response body has comments array and pagination fields', function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json).to.have.property('comments').that.is.an('array');",
+                  "    pm.expect(json).to.have.property('total').that.is.a('number');",
+                  "    pm.expect(json).to.have.property('skip').that.is.a('number');",
+                  "    pm.expect(json).to.have.property('limit').that.is.a('number');",
+                  "})",
+                  "",
+                  "pm.test('comments array is not empty', function () {",
+                  "    pm.expect(pm.response.json().comments).to.have.length.above(0);",
+                  "})",
+                  "",
+                  "pm.test('Each comment has required fields with correct types', function () {",
+                  "    pm.response.json().comments.forEach(function (c, i) {",
+                  "        pm.expect(c, '[' + i + '] id').to.have.property('id').that.is.a('number');",
+                  "        pm.expect(c, '[' + i + '] body').to.have.property('body').that.is.a('string');",
+                  "        pm.expect(c, '[' + i + '] postId').to.have.property('postId').that.is.a('number');",
+                  "        pm.expect(c, '[' + i + '] user').to.have.property('user').that.is.an('object');",
+                  "        pm.expect(c.user, '[' + i + '] user.username').to.have.property('username').that.is.a('string');",
+                  "    });",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/comments",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "comments"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "createComment",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "})",
+                  "",
+                  "pm.test('Response time is less than 2000ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "})",
+                  "",
+                  "pm.test('Content-Type includes application/json', function () {",
+                  "    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');",
+                  "})",
+                  "",
+                  "pm.test('Response body has required comment fields', function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json).to.have.property('id').that.is.a('number');",
+                  "    pm.expect(json).to.have.property('body').that.is.a('string');",
+                  "    pm.expect(json).to.have.property('postId').that.is.a('number');",
+                  "    pm.expect(json).to.have.property('user').that.is.an('object');",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"body\": \"This makes all sense to me!\",\r\n    \"postId\": 3,\r\n    \"userId\": 5\r\n  }\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/comments/add",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "comments",
+                "add"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "updateComment",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "})",
+                  "",
+                  "pm.test('Response time is less than 2000ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "})",
+                  "",
+                  "pm.test('Content-Type includes application/json', function () {",
+                  "    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');",
+                  "})",
+                  "",
+                  "pm.test('Response body has required comment fields with correct types', function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json).to.have.property('id').that.is.a('number');",
+                  "    pm.expect(json).to.have.property('body').that.is.a('string');",
+                  "    pm.expect(json).to.have.property('postId').that.is.a('number');",
+                  "})",
+                  "",
+                  "pm.test('id equals 1 (fixed resource)', function () {",
+                  "    pm.expect(pm.response.json().id).to.equal(1);",
+                  "})"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"body\": \"This makes all sense to you!\"\r\n  }\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/comments/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "comments",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Comment",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "})",
+                  "",
+                  "pm.test('Response time is less than 2000ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "})",
+                  "",
+                  "pm.test('Content-Type includes application/json', function () {",
+                  "    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');",
+                  "})",
+                  "",
+                  "pm.test('Response body has id and isDeleted flag', function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json).to.have.property('id').that.is.a('number');",
+                  "    pm.expect(json).to.have.property('isDeleted').that.is.a('boolean');",
+                  "    pm.expect(json).to.have.property('deletedOn').that.is.a('string');",
+                  "})",
+                  "",
+                  "pm.test('isDeleted is true', function () {",
+                  "    pm.expect(pm.response.json().isDeleted).to.be.true;",
+                  "})",
+                  "",
+                  "pm.test('id equals 1 (fixed resource)', function () {",
+                  "    pm.expect(pm.response.json().id).to.equal(1);",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/comments/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "comments",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login User and Get Auth Token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.environment.set(\"accessToken\", pm.response.json().accessToken);\r",
+                  "pm.environment.set(\"refeshToken\", pm.response.json().refreshToken);\r",
+                  "\r",
+                  "const data = pm.response.json();\r",
+                  "pm.test(\"Refresh Token Success\", function(){\r",
+                  "    pm.expect(data.accessToken).to.exist;\r",
+                  "    pm.expect(data.refreshToken).to.exist;\r",
+                  "})\r",
+                  "\r",
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response time is less than 700ms\", function () {\r",
+                  "    pm.expect(pm.response.responseTime).to.be.below(700);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Successful POST request\", function () {\r",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\r",
+                  "});\r",
+                  "pm.test(\"Status code name has string\", function () {\r",
+                  "    pm.response.to.have.status(\"OK\");\r",
+                  "});\r",
+                  "\r",
+                  "",
+                  "",
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "})",
+                  "",
+                  "pm.test('Response time is less than 2000ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "})",
+                  "",
+                  "pm.test('Content-Type includes application/json', function () {",
+                  "    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');",
+                  "})",
+                  "",
+                  "pm.test('Response body has token fields', function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json).to.have.property('accessToken').that.is.a('string').and.not.empty;",
+                  "    pm.expect(json).to.have.property('refreshToken').that.is.a('string').and.not.empty;",
+                  "})",
+                  "",
+                  "pm.test('Response body has user identity fields', function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json).to.have.property('id').that.is.a('number');",
+                  "    pm.expect(json).to.have.property('username').that.is.a('string');",
+                  "    pm.expect(json).to.have.property('email').that.is.a('string');",
+                  "    pm.expect(json).to.have.property('firstName').that.is.a('string');",
+                  "    pm.expect(json).to.have.property('lastName').that.is.a('string');",
+                  "})",
+                  "",
+                  "pm.test('Save accessToken and refreshToken to environment', function () {",
+                  "    var json = pm.response.json();",
+                  "    if (json.accessToken)",
+                  "        pm.environment.set('accessToken', json.accessToken);",
+                  "    if (json.refreshToken)",
+                  "        pm.environment.set('refeshToken', json.refreshToken);",
+                  "    pm.expect(pm.environment.get('accessToken')).to.be.a('string').and.not.empty;",
+                  "})"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"username\": \"emilys\",\r\n    \"password\": \"emilyspass\",\r\n    \"expiresInMins\": \"30\"// optional, defaults to 60\r\n  }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://dummyjson.com/auth/login",
+              "protocol": "https",
+              "host": [
+                "dummyjson",
+                "com"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Refesh Token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.environment.set(\"accessToken\", pm.response.json().accessToken);\r",
+                  "pm.environment.set(\"refeshToken\", pm.response.json().refreshToken);\r",
+                  "\r",
+                  "const data = pm.response.json();\r",
+                  "\r",
+                  "const oldRefreshToken = pm.environment.get(\"refresh_token\");\r",
+                  "\r",
+                  "pm.test(\"Refresh Token Success\", function(){\r",
+                  "    pm.expect(data.accessToken).to.exist;\r",
+                  "    pm.expect(data.refreshToken).to.exist;\r",
+                  "})\r",
+                  "\r",
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response time is less than 700ms\", function () {\r",
+                  "    pm.expect(pm.response.responseTime).to.be.below(700);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Successful POST request\", function () {\r",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\r",
+                  "});\r",
+                  "pm.test(\"Status code name has string\", function () {\r",
+                  "    pm.response.to.have.status(\"OK\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Refresh token rotated\", () => {\r",
+                  "  pm.expect(data.refreshToken).to.not.equal(oldRefreshToken);\r",
+                  "});",
+                  "",
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "})",
+                  "",
+                  "pm.test('Response time is less than 2000ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "})",
+                  "",
+                  "pm.test('Content-Type includes application/json', function () {",
+                  "    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');",
+                  "})",
+                  "",
+                  "pm.test('Response body has new accessToken', function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json).to.have.property('accessToken').that.is.a('string').and.not.empty;",
+                  "    pm.expect(json).to.have.property('refreshToken').that.is.a('string').and.not.empty;",
+                  "})",
+                  "",
+                  "pm.test('Save new accessToken to environment', function () {",
+                  "    var json = pm.response.json();",
+                  "    if (json.accessToken)",
+                  "        pm.environment.set('accessToken', json.accessToken);",
+                  "    if (json.refreshToken)",
+                  "        pm.environment.set('refeshToken', json.refreshToken);",
+                  "    pm.expect(pm.environment.get('accessToken')).to.be.a('string').and.not.empty;",
+                  "})"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"refreshToken\": \"\", // Optional, if not provided, the server will use the cookie\r\n    \"expiresInMins\": \"30\"// optional (FOR ACCESS TOKEN), defaults to 60 \r\n  }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://dummyjson.com/auth/refresh",
+              "protocol": "https",
+              "host": [
+                "dummyjson",
+                "com"
+              ],
+              "path": [
+                "auth",
+                "refresh"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
