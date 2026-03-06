@@ -4,19 +4,19 @@
 	"values": [
 		{
 			"key": "baseUrl",
-			"value": "",
+			"value": "https://fakestoreapi.com",
 			"type": "default",
 			"enabled": true
 		},
 		{
 			"key": "username",
-			"value": "",
+			"value": "johnd",
 			"type": "any",
 			"enabled": true
 		},
 		{
 			"key": "password",
-			"value": "",
+			"value": "m38rmF$",
 			"type": "any",
 			"enabled": true
 		}
