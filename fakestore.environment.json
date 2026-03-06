@@ -1,0 +1,28 @@
+{
+	"id": "1cad841d-dc45-4791-8dec-39615bba3a69",
+	"name": "Fake Store",
+	"values": [
+		{
+			"key": "baseUrl",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "username",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "password",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		}
+	],
+	"color": null,
+	"_postman_variable_scope": "environment",
+	"_postman_exported_at": "2026-03-06T06:58:34.920Z",
+	"_postman_exported_using": "Postman/12.0.5"
+}
