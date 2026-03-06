@@ -15,5 +15,8 @@ jobs:
       - name: Install Newman
         run: npm install -g newman
 
+      - name: Check files
+        run: ls -R
+
       - name: Run Postman Collection
         run: newman run Dummy.postman_collection.json -e Dummy.postman_environment.json
