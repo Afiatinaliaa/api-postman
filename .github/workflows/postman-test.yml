@@ -19,4 +19,4 @@ jobs:
         run: ls -R
 
       - name: Run Postman Collection
-        run: newman run fakestore.collection.json -e fakestore.environment.json
+        run: newman run fakestore.collection.json -e fakestore.environment.json --verbose
